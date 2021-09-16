@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +20,7 @@ import com.thecodeveal.app.services.CustomUserService;
 
 @Configuration
 @EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -32,9 +34,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth.inMemoryAuthentication().withUser("Pardeep").password(passwordEncoder().encode("test@123"))
-				.authorities("USER", "ADMIN");
 
 		auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
 
@@ -56,8 +55,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint).and()
-				.authorizeRequests((request) -> request.antMatchers("/h2-console/**", "/api/v1/auth/login").permitAll()
-						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
+				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login").permitAll()
+						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+						.antMatchers("/api/v1/showUsers").hasRole("ADMIN")
+						.anyRequest().authenticated())
 				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
 						UsernamePasswordAuthenticationFilter.class);
 

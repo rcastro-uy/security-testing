@@ -1,8 +1,7 @@
 package com.thecodeveal.app.entities;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import javassist.Loader;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Table(name = "AUTH_USER_DETAILS")
@@ -56,13 +57,14 @@ public class User implements UserDetails {
 	private boolean enabled=true;
 
 	
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@JoinTable(name = "AUTH_USER_AUTHORITY", joinColumns = @JoinColumn(referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(referencedColumnName ="id"))
-	private List<Authority> authorities;
+	private String authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
+		String[] autoridades = authorities.split(",");
+		Set<SimpleGrantedAuthority> authorities = Arrays.stream(autoridades)
+													.map(autoridad -> new SimpleGrantedAuthority(autoridad))
+													.collect(Collectors.toSet());
 		return authorities;
 	}
 
@@ -170,8 +172,13 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public void setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		String autoridades = "";
+		for(GrantedAuthority g: authorities) {
+			autoridades = autoridades + g.getAuthority() + ",";
+		}
+		String retorno = autoridades.substring(0, autoridades.length()-1);//le saco la ultima coma
+		this.authorities = retorno;
 	}
 
 	public void setEnabled(boolean enabled) {

@@ -3,11 +3,13 @@ package com.thecodeveal.app.config;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Date;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.thecodeveal.app.entities.Authority;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -57,11 +59,12 @@ public class JWTTokenHelper {
 	        return username;
 	 }
 	 
-	 public String generateToken(String username) throws InvalidKeySpecException, NoSuchAlgorithmException {
-	        
-	        return Jwts.builder()
+	 public String generateToken(String username, Collection<? extends GrantedAuthority> authorities) throws InvalidKeySpecException, NoSuchAlgorithmException {
+		 Arrays.stream(authorities.toArray()).forEach(res -> System.out.println(res.toString()));
+			return Jwts.builder()
 	                .setIssuer( appName )
 	                .setSubject(username)
+					.claim("authorities", authorities)
 	                .setIssuedAt(new Date())
 	                .setExpiration(generateExpirationDate())
 	                .signWith( SIGNATURE_ALGORITHM, secretKey )

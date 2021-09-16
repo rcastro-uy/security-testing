@@ -14,6 +14,8 @@ import com.thecodeveal.app.entities.Authority;
 import com.thecodeveal.app.entities.User;
 import com.thecodeveal.app.repository.UserDetailsRepository;
 
+import static com.thecodeveal.app.entities.UserRole.*;
+
 @SpringBootApplication
 public class SpringSecurityDemoAppApplication {
 	
@@ -30,34 +32,45 @@ public class SpringSecurityDemoAppApplication {
 	@PostConstruct
 	protected void init() {
 		
-		List<Authority> authorityList=new ArrayList<>();
-		
-		authorityList.add(createAuthority("USER","User role"));
-		//authorityList.add(createAuthority("ADMIN","Admin role"));
+//		List<Authority> authorityListUser=new ArrayList<>();
+//		List<Authority> authorityListAdmin=new ArrayList<>();
+//
+//		authorityListUser.add(createAuthority("USER","User role"));
+//		authorityListAdmin.add(createAuthority("ADMIN","Admin role"));
 		
 		User user=new User();
 		
-		user.setUserName("pardeep161");
-		user.setFirstName("Pardeep");
-		user.setLastName("K");
+		user.setUserName("manuelbiurrun");
+		user.setFirstName("Manuel");
+		user.setLastName("Biurrun");
 		
-		user.setPassword(passwordEncoder.encode("pardeep@123"));
+		user.setPassword(passwordEncoder.encode("montxito"));
 		user.setEnabled(true);
-		user.setAuthorities(authorityList);
+		user.setAuthorities(USER.getGrantedAuthorities());
+//---------------------------------------------------------------------------
+		User userAdmin=new User();
+
+		userAdmin.setUserName("rodrigocastro");
+		userAdmin.setFirstName("Rodrigo");
+		userAdmin.setLastName("Castro");
+
+		userAdmin.setPassword(passwordEncoder.encode("javaSucks"));
+		userAdmin.setEnabled(true);
+		userAdmin.setAuthorities(ADMIN.getGrantedAuthorities());
 		
-		userDetailsRepository.save(user);
+		userDetailsRepository.save(userAdmin);
 		
 		
 		
 	}
 	
 	
-	private Authority createAuthority(String roleCode,String roleDescription) {
-		Authority authority=new Authority();
-		authority.setRoleCode(roleCode);
-		authority.setRoleDescription(roleDescription);
-		return authority;
-	}
+//	private Authority createAuthority(String roleCode,String roleDescription) {
+//		Authority authority=new Authority();
+//		authority.setRoleCode(roleCode);
+//		authority.setRoleDescription(roleDescription);
+//		return authority;
+//	}
 	
 	
 
