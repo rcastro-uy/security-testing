@@ -24,9 +24,9 @@ import com.thecodeveal.app.requests.AuthenticationRequest;
 import com.thecodeveal.app.responses.LoginResponse;
 import com.thecodeveal.app.responses.UserInfo;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin
 public class AuthenticationController {
 
 	@Autowired
@@ -41,6 +41,7 @@ public class AuthenticationController {
 	@PostMapping("/auth/login")
 	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
+		System.out.println(authenticationRequest.getUserName());
 		final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				authenticationRequest.getUserName(), authenticationRequest.getPassword()));
 		
@@ -51,7 +52,6 @@ public class AuthenticationController {
 		String jwtToken=jWTTokenHelper.generateToken(user.getUsername(), user.getAuthorities());
 		LoginResponse response=new LoginResponse();
 		response.setToken(jwtToken);
-		
 
 		return ResponseEntity.ok(response);
 	}

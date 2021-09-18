@@ -62,10 +62,16 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		String[] autoridades = authorities.split(",");
-		Set<SimpleGrantedAuthority> authorities = Arrays.stream(autoridades)
-													.map(autoridad -> new SimpleGrantedAuthority(autoridad))
+		String[] roles = new String[1];
+		for(String s: autoridades) {
+			if(s.startsWith("ROLE_")) {
+				roles[0] = s;
+			}
+		}
+		Set<SimpleGrantedAuthority> rol = Arrays.stream(roles)
+													.map(role -> new SimpleGrantedAuthority(role))
 													.collect(Collectors.toSet());
-		return authorities;
+		return rol;
 	}
 
 	@Override
@@ -177,7 +183,7 @@ public class User implements UserDetails {
 		for(GrantedAuthority g: authorities) {
 			autoridades = autoridades + g.getAuthority() + ",";
 		}
-		String retorno = autoridades.substring(0, autoridades.length()-1);//le saco la ultima coma
+		String retorno = autoridades.substring(0, autoridades.length()-1);
 		this.authorities = retorno;
 	}
 

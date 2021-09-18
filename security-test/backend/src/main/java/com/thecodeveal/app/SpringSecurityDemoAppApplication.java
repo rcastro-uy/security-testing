@@ -47,6 +47,8 @@ public class SpringSecurityDemoAppApplication {
 		user.setPassword(passwordEncoder.encode("montxito"));
 		user.setEnabled(true);
 		user.setAuthorities(USER.getGrantedAuthorities());
+
+		userDetailsRepository.save(user);
 //---------------------------------------------------------------------------
 		User userAdmin=new User();
 

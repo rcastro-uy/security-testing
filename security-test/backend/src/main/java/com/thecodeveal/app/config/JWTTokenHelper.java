@@ -60,7 +60,6 @@ public class JWTTokenHelper {
 	 }
 	 
 	 public String generateToken(String username, Collection<? extends GrantedAuthority> authorities) throws InvalidKeySpecException, NoSuchAlgorithmException {
-		 Arrays.stream(authorities.toArray()).forEach(res -> System.out.println(res.toString()));
 			return Jwts.builder()
 	                .setIssuer( appName )
 	                .setSubject(username)
@@ -116,6 +115,7 @@ public class JWTTokenHelper {
 	public String getToken( HttpServletRequest request ) {
       
         String authHeader = getAuthHeaderFromHeader( request );
+		System.out.println(authHeader);
         if ( authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
         }

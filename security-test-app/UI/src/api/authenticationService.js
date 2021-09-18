@@ -23,3 +23,13 @@ export const fetchUserData=(authRequest)=>{
         }
     })
 }
+
+export const fetchUsers=()=>{
+    return axios({
+        method:'GET',
+        url:`${process.env.hostUrl||'http://localhost:8080'}/api/v1/users/showUsers`,
+        headers:{
+            'Authorization':'Bearer '+getToken()
+        }
+    })
+}

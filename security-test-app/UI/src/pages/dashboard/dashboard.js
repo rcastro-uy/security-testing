@@ -34,11 +34,8 @@ export const Dashboard=(props)=>{
     return (
         <Container>
             <MainWrapper>
-                <h4>Hello {data && `${data.firstName} ${data.lastName}`}</h4>
+                <h4>Hello {data && `${data.firstName} ${data.lastName}`}</h4>{/*falta imprimir los usuarios(arreglar)*/}
                 <br></br>
-                {data && data.roles && data.roles.filter(value => value.roleCode==='ADMIN').length>0 && <Button type="variant" onClick={() => {props.history.push('/showUsers');}}>Show Users</Button> }
-                <br></br>
-
                 <Button style={{marginTop:'5px'}} onClick={() =>logOut()}>Logout</Button>
             </MainWrapper>
         </Container>

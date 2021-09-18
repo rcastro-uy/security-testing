@@ -33,7 +33,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 		
 		
 		String authToken=jwtTokenHelper.getToken(request);
-		System.out.println(authToken);
+		System.out.println(authToken);//imprimo el token
 		if(!testing) {
 			System.out.println(authToken);
 			this.testing = true;
