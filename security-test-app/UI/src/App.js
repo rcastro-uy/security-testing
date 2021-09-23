@@ -9,6 +9,8 @@ import {
 import  LoginPage from './pages/LoginPage';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { ShowUsers } from './pages/showUsers/showUsers';
+import ResetPassword from './pages/passwordRecovery/PasswordReset';
+import ConfirmPassword from './pages/passwordRecovery/PasswordConfirm';
 
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
           <Route exact path="/" component={LoginPage}/>
           <Route exact path="/dashboard" component={Dashboard}/>
           <Route exact path="/showUsers" component={ShowUsers}/>
+          <Route exact path="/forgot" component={ResetPassword}/>
+          <Route exact path="/reset/:id" component={ConfirmPassword}/>
         </Switch>
       </BrowserRouter>
   );

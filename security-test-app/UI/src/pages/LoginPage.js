@@ -4,6 +4,7 @@ import { authenticate, authFailure, authSuccess } from '../redux/authActions';
 import './loginpage.css';
 import {userLogin} from '../api/authenticationService';
 import {Alert,Spinner} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const LoginPage=({loading,error,...props})=>{
 
@@ -97,9 +98,9 @@ const LoginPage=({loading,error,...props})=>{
 
                                 <div className="form-group">
                                     <label>Password
-                                        <a href="forgot.html" className="float-right">
-                                            Forgot Password?
-                                        </a>
+                                        <p className="forgot-password text-right">
+                                            <Link to={'/forgot'}>Forgot password?</Link>
+                                        </p>
                                     </label>
                                     <input id="password" type="password" className="form-control" minLength={8} value={values.password} onChange={handleChange} name="password" required/>
                                     <div className="invalid-feedback">
