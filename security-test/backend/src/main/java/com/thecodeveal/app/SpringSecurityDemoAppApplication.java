@@ -43,6 +43,7 @@ public class SpringSecurityDemoAppApplication {
 		user.setUserName("manuelbiurrun");
 		user.setFirstName("Manuel");
 		user.setLastName("Biurrun");
+		user.setEmail("manuel@gmail.com");
 		
 		user.setPassword(passwordEncoder.encode("montxito"));
 		user.setEnabled(true);
@@ -55,6 +56,7 @@ public class SpringSecurityDemoAppApplication {
 		userAdmin.setUserName("rodrigocastro");
 		userAdmin.setFirstName("Rodrigo");
 		userAdmin.setLastName("Castro");
+		user.setEmail("rodrigo@gmail.com");
 
 		userAdmin.setPassword(passwordEncoder.encode("javaSucks"));
 		userAdmin.setEnabled(true);

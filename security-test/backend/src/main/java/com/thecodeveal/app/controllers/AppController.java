@@ -3,24 +3,42 @@ package com.thecodeveal.app.controllers;
 import com.thecodeveal.app.entities.User;
 import com.thecodeveal.app.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users/")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AppController {
 
-	private String tokenPassChange;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-	private Long idPassChange;
+	private JavaMailSender emailSender;
+
+	private String mailPassChange;
+
+	@Value("${mail.username}")
+	private String mailRecovery;
 	
 	@Autowired
 	UserDetailsRepository userRepo;
+
+	@Autowired
+	public AppController(JavaMailSender emailSender, UserDetailsRepository repo) {
+		this.emailSender = emailSender;
+		this.userRepo = repo;
+	}
 
 	@GetMapping
 	public String testApp() {
@@ -35,17 +53,30 @@ public class AppController {
 	}
 
 	@PostMapping(path = "/passRecover")
-	public ResponseEntity<?> passRecover(String correo) {
-		//generar un token y guardarlo en la variable global
-		//obtener el id del usuario perteneciente al correo y guardarlo en la variable global
-		//enviar un mensaje al correo ingresado
-		//el mensaje debe contener un URL, el cual debe contener el token
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<String> passRecover(String correo) {
+		String token = UUID.randomUUID().toString();
+
+		User usuario = userRepo.findByEmail(correo);
+		this.mailPassChange = correo;
+
+		String url = "http://localhost:3000/";
+		String bodyMessage = "Para cambiar la contraseña, click aqui: " + url;
+
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(correo);
+		message.setFrom(mailRecovery);
+		message.setSubject("Recuperación de contraeña para el usuario: " + usuario.getUserName());
+		message.setText(bodyMessage);
+
+		emailSender.send(message);
+		return new ResponseEntity<>(token, HttpStatus.OK);
 	}
 
-	@PatchMapping(path = "/passChange")//no se como funciona patch
-	public ResponseEntity<?> passChange(String newPass) {
-		//reemplazlo la pass actual del usuario por la newPass(encriptada)
+	@PatchMapping(path = "/passChange")
+	public ResponseEntity<?> passChange(@RequestBody String newPass) {
+		User usuario = userRepo.findByEmail(this.mailPassChange);
+		usuario.setPassword(passwordEncoder.encode(newPass));
+		userRepo.save(usuario);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
