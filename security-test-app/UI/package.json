@@ -40,5 +40,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "proxy": {
+    "/api/v1/": {
+      "target": "http://localhost:8080",
+      "ws": true
+    }
+
   }
 }

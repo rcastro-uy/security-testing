@@ -33,9 +33,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 		
 		
 		String authToken=jwtTokenHelper.getToken(request);
-		System.out.println(authToken);//imprimo el token
+		System.out.println("prints del filter " + authToken);
 		if(!testing) {
-			System.out.println(authToken);
 			this.testing = true;
 		} else {
 			this.testing = false;

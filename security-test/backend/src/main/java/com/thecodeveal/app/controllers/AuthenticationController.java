@@ -24,7 +24,7 @@ import com.thecodeveal.app.requests.AuthenticationRequest;
 import com.thecodeveal.app.responses.LoginResponse;
 import com.thecodeveal.app.responses.UserInfo;
 
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
 public class AuthenticationController {
