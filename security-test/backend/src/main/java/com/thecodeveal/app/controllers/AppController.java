@@ -59,7 +59,7 @@ public class AppController {
 		User usuario = userRepo.findByEmail(correo);
 		this.mailPassChange = correo;
 
-		String url = "http://localhost:3000/";
+		String url = "http://localhost:3000/rest/" + token;
 		String bodyMessage = "Para cambiar la contraseña, click aqui: " + url;
 
 		SimpleMailMessage message = new SimpleMailMessage();
