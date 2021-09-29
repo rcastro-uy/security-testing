@@ -63,7 +63,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
 						UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().disable().cors().and().headers().frameOptions().disable();
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
 
 	}
 

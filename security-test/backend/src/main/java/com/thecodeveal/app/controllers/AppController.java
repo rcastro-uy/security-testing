@@ -13,12 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users/")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AppController {
 
 	@Autowired
