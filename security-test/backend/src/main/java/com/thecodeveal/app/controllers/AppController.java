@@ -32,7 +32,9 @@ public class AppController {
 	private String mailRecovery;
 	
 	@Autowired
-	UserDetailsRepository userRepo;
+	private UserDetailsRepository userRepo;
+
+	private String token;
 
 	@Autowired
 	public AppController(JavaMailSender emailSender, UserDetailsRepository repo) {
@@ -53,13 +55,13 @@ public class AppController {
 	}
 
 	@PostMapping(path = "/passRecover")
-	public ResponseEntity<String> passRecover(String correo) {
-		String token = UUID.randomUUID().toString();
+	public ResponseEntity<?> passRecover(String correo) {
+		this.token = UUID.randomUUID().toString();
 
-		User usuario = userRepo.findByEmail(correo);
+		User usuario = userRepo.findByEmail(correo);//falta control de existencia del correo
 		this.mailPassChange = correo;
 
-		String url = "http://localhost:3000/rest/" + token;
+		String url = "http://localhost:3000/reset/" + this.token;
 		String bodyMessage = "Para cambiar la contraseña, click aqui: " + url;
 
 		SimpleMailMessage message = new SimpleMailMessage();
@@ -69,7 +71,16 @@ public class AppController {
 		message.setText(bodyMessage);
 
 		emailSender.send(message);
-		return new ResponseEntity<>(token, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/check")
+	public ResponseEntity<Boolean> checkToken(@RequestBody String appToken) {
+		Boolean sonIguales = false;
+		if(appToken == this.token) {
+			sonIguales = true;
+		}
+		return new ResponseEntity<Boolean>(sonIguales ,HttpStatus.OK);
 	}
 
 	@PatchMapping(path = "/passChange")
@@ -77,6 +88,7 @@ public class AppController {
 		User usuario = userRepo.findByEmail(this.mailPassChange);
 		usuario.setPassword(passwordEncoder.encode(newPass));
 		userRepo.save(usuario);
+		this.token = null;
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
