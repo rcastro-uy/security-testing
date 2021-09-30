@@ -21,7 +21,7 @@ function App() {
           <Route exact path="/dashboard" component={Dashboard}/>
           <Route exact path="/showUsers" component={ShowUsers}/>
           <Route exact path="/forgot" component={ResetPassword}/>
-          <Route exact path="/reset/:id" component={ConfirmPassword}/>
+          <Route exact path="/reset/:token?" component={ConfirmPassword}/>
         </Switch>
       </BrowserRouter>
   );

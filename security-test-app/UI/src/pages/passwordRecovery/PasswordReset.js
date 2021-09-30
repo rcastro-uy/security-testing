@@ -8,8 +8,8 @@ import LoaderButton from "./LoaderButton"
 import { changePassword, recoverPassword } from "../../api/passwordRecoveryService";
 import { FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
-export default function ResetPassword() {
 
+export default function ResetPassword() {
     const [codigoEnviado, setCodigoEnviado] = useState(false);  
     //const [confirmado, setConfirmado] = useState(false);
     //const [isConfirmando, setIsConfirmando] = useState(false);
@@ -36,36 +36,16 @@ export default function ResetPassword() {
     }
 */
     async function handleEnviarCodigoClick(event) {
-        event.preventDefault();
-    
-        setIsEnviandoCodigo(true);
-    
-        try {
-          await recoverPassword(campos.email);
-          setCodigoEnviado(true);
-          //setRedirect("/reset")
-        } catch (error) {
-          setIsEnviandoCodigo(false);
-        }
+      event.preventDefault();
+  
+      setIsEnviandoCodigo(true);
+      await recoverPassword(campos.email).then((response)=>{
+        setCodigoEnviado(true);
+      }).catch((error)=>{
+        setIsEnviandoCodigo(false);
+      });
     }
-    /*
-    async function handleConfirmarClick(event) {
-        event.preventDefault();
     
-        setIsConfirmando(true);
-    
-        try {
-          /*await changePassword(
-            fields.email,
-            fields.code,
-            fields.password
-          );
-          setConfirmado(true);
-        } catch (error) {
-          setIsConfirmando(false);
-        }
-    }
-*/
     function renderEmailForm() {
         return (
           <form onSubmit={handleEnviarCodigoClick}>
@@ -79,34 +59,8 @@ export default function ResetPassword() {
           </form>
         );
       }
-    /*
-      function renderConfirmacionForm() {
-        return (
-          <form onSubmit={handleConfirmarClick}>
-            <FormGroup controlId="code">
-              <FormLabel>Confirmation Code</FormLabel>
-              <FormControl autoFocus type="tel" value={campos.code} onChange={handleOnChange} />
-              <FormText>
-                Please check your email ({campos.email}) for the confirmation code.
-              </FormText>
-            </FormGroup>
-            <hr />
-            <FormGroup controlId="password">
-              <FormLabel>New Password</FormLabel>
-              <FormControl type="password" value={campos.password} onChange={handleOnChange} />
-            </FormGroup>
-            <FormGroup controlId="confirmarPassword">
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl type="password" value={campos.confirmarPassword} onChange={handleOnChange} />
-            </FormGroup>
-            <LoaderButton block type="submit" isLoading={isConfirmando} disabled={!validarPasswordForm()}>
-              Confirm
-            </LoaderButton>
-          </form>
-        );
-    }
     
-    useEffect(() =>{    
+    /*useEffect(() =>{    
         document.title = `Code is ${campos.code}`;  
     }, [campos.code]);*/
 
