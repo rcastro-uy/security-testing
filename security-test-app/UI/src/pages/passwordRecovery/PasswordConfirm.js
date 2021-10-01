@@ -29,6 +29,7 @@ export default function ResetPasswordConfirm() {
     async function validarToken() {
       setIsValidandoToken(true);
         await checkToken(token).then((response)=>{
+          console.log(response.data);
           setTokenInvalido(!response.data);
           setIsValidandoToken(false);
         }).catch((error)=>{
@@ -42,7 +43,6 @@ export default function ResetPasswordConfirm() {
         console.log("URL token: " + token);
         setIsConfirmando(true);
         changePassword(
-          token,
           campos.password
         ).then((response)=>{
           setConfirmado(true);

@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -78,19 +79,22 @@ public class AppController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/check")
+	@PostMapping(path = "/check")//deberia ser Get... explorar pasar el token por el path
 	public ResponseEntity<Boolean> checkToken(@RequestBody String appToken) {
-		System.out.println("appToken: " + appToken);
-		System.out.println("myToken " + this.token);
+		String myToken = appToken.replaceAll("=", "");
+		System.out.println("appToken: " + myToken);
+		System.out.println("myToken: " + this.token);
 		Boolean sonIguales = false;
-		if(appToken == this.token) {
+		if(myToken.equals(this.token)) {
+			System.out.println("token local: " + this.token);
 			sonIguales = true;
 		}
-		return new ResponseEntity<Boolean>(sonIguales ,HttpStatus.OK);
+		return new ResponseEntity<>(sonIguales ,HttpStatus.OK);
 	}
 
-	@PatchMapping(path = "/passChange")
+	@PostMapping(path = "/passChange")//no deberia ser Post... pero anda
 	public ResponseEntity<?> passChange(@RequestBody String newPass) {
+		System.out.println("newPass: " + newPass);
 		User usuario = userRepo.findByEmail(this.mailPassChange);
 		usuario.setPassword(passwordEncoder.encode(newPass));
 		userRepo.save(usuario);

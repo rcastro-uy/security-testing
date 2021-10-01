@@ -13,6 +13,7 @@ export const recoverPassword=(recoverRequest)=>{
 }
 
 export const changePassword=(recoverRequest)=>{
+    console.log(recoverRequest);
     return axios({
         'method':'POST',
         'url':`${process.env.hostUrl||'http://localhost:8080'}/api/v1/users/passChange`,
@@ -22,7 +23,7 @@ export const changePassword=(recoverRequest)=>{
 
 export const checkToken=(recoverRequest)=>{
     return axios({
-        'method':'GET',
+        'method':'POST',
         'url':`${process.env.hostUrl||'http://localhost:8080'}/api/v1/users/check`,
         'data':recoverRequest
     })

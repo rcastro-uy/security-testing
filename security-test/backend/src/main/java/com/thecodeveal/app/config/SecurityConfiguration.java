@@ -56,7 +56,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint).and()
-				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login", "/api/v1/users/passRecover").permitAll()
+				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login", "/api/v1/users/passRecover",
+								"/api/v1/users/check", "/api/v1/users/passChange").permitAll()
 						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.antMatchers("/api/v1/users/showUsers").hasRole("ADMIN")
 						.anyRequest().authenticated())
