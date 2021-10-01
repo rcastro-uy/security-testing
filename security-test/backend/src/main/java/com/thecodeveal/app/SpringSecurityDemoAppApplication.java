@@ -43,7 +43,7 @@ public class SpringSecurityDemoAppApplication {
 		user.setUserName("manuelbiurrun");
 		user.setFirstName("Manuel");
 		user.setLastName("Biurrun");
-		user.setEmail("manuel@gmail.com");
+		user.setEmail("manu.biurrun@gmail.com");
 		
 		user.setPassword(passwordEncoder.encode("montxito"));
 		user.setEnabled(true);

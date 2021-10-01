@@ -56,14 +56,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint).and()
-				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login").permitAll()
+				.authorizeRequests((request) -> request.antMatchers("/api/v1/auth/login", "/api/v1/users/passRecover").permitAll()
 						.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.antMatchers("/api/v1/users/showUsers").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.addFilterBefore(new JWTAuthenticationFilter(userService, jWTTokenHelper),
 						UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().disable().cors().and().headers().frameOptions().disable();
+		http.csrf().disable();
+		http.cors().and().headers().frameOptions().disable();
 
 	}
 
