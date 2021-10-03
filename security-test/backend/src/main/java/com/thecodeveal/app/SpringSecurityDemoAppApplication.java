@@ -56,7 +56,7 @@ public class SpringSecurityDemoAppApplication {
 		userAdmin.setUserName("rodrigocastro");
 		userAdmin.setFirstName("Rodrigo");
 		userAdmin.setLastName("Castro");
-		user.setEmail("rodrigo@gmail.com");
+		userAdmin.setEmail("tfimally@gmail.com");
 
 		userAdmin.setPassword(passwordEncoder.encode("javaSucks"));
 		userAdmin.setEnabled(true);

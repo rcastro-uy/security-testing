@@ -10,7 +10,7 @@ import static com.thecodeveal.app.entities.UserPermissions.*;
 
 public enum UserRole {
     USER(Sets.newHashSet()),
-    ADMIN(Sets.newHashSet(ADMIN_READ, ADMIN_WRITE, USER_READ, USER_WRITE));
+    ADMIN(Sets.newHashSet());
 
     private final Set<UserPermissions> permissions;
 
